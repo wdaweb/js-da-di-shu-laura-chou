@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="../images/plant1-1.png" id="img" width="100%">
+    <script>
+        // 禁止回上一頁
+        window.history.forward(1);
+        const img = document.getElementById('img');
+        // 音樂
+        const music = new Audio();
+        music.src = `../music/explanation.mp3`;
+        music.play();
+        let frequency = 1;
+        img.onclick = () => {
+            const click = new Audio();
+            click.src = '../music/click.mp3';
+            click.play();
+            for (let i = 0; i < 12; i++) {
+                if (frequency == i + 1) {
+                    if (i == 11) {
+                        window.location.href = 'game.html'
+                    } else {
+                        img.src = `../images/plant1-${frequency}.png`
+                    }
+
+                }
+            }
+            frequency++;
+        }
+
+    </script>
+</body>
+
+</html>
