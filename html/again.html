@@ -4,30 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/again.css">
     <title>Document</title>
-    <style>
-        #quit:hover {
-            transform: scale(1.1);
-        }
-
-        #again:hover {
-            transform: scale(1.1);
-        }
-    </style>
 </head>
 
 <body>
-    <table border="0" align="center">
-        <tr align="center">
-            <td><img src="../images/plant2.png" width="90%"></td>
-        </tr>
-        <tr>
-            <td align="center">
-                <img src="../images/quit.png" style="margin-right: 5%;" id="quit">
-                <img src="../images/again.png" id="again">
-            </td>
-        </tr>
-    </table>
+    <div class="flex">
+        <div style="width:100%; height: 80%;"><img src="../images/plant2.png" width="100%" height="100%"></div>
+        <div style="width:100%; text-align: center; padding-top: 12px">
+            <img src="../images/quit.png" style="margin-right: 5%;" id="quit">
+            <img src="../images/again.png" id="again">
+        </div>
+    </div>
+    
     <script>
         // 禁止回上一頁
         window.history.forward(1);

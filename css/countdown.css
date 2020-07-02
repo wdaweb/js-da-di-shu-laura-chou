@@ -1,0 +1,60 @@
+body,html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Arimo", sans-serif;
+}
+
+/*=================
+* TIMER
+*=================*/
+.timer {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-clock {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.timer-clock .clock-display-grp {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-clock .clock-display-grp .number-grp {
+    width: auto;
+    display: block;
+    height: 120px;
+    float: left;
+    overflow: hidden;
+}
+
+.timer-clock .clock-display-grp .number-grp .number-grp-wrp {
+    width: 100%;
+    height: 50px;
+    position: relative;
+}
+
+.timer-clock .clock-display-grp .number-grp .number-grp-wrp .num {
+    width: auto;
+    position: relative;
+}
+
+.timer-clock .clock-display-grp .number-grp .number-grp-wrp .num p {
+    width: auto;
+    display: table;
+    font-size: 50px;
+    font-weight: bold;
+    margin: 60px 0 60px 0;
+}

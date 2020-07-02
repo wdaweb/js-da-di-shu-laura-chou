@@ -4,126 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/game.css">
     <title>Document</title>
-
-    <style>
-        #div {
-            margin-top: 15%;
-
-        }
-
-
-        .hp_border {
-            width: 100px;
-            height: 10px;
-            background: #fff;
-            border: 1px solid black;
-        }
-
-        .hp_color {
-            width: 100px;
-            height: 10px;
-            background: red;
-        }
-
-
-        #game {
-            background-image: url("../images/grass.jpg");
-            background-repeat: no-repeat;
-        }
-
-        .hole {
-            width: 100px;
-            height: 100px;
-            cursor: url('../images/fist.png') 45 45, auto;
-            position: relative;
-            overflow: hidden;
-            border: 1px outset white;
-        }
-
-        .hole:active {
-            cursor: url('../images/punch.png') 45 45, auto;
-        }
-
-        .red {
-            background-image: "";
-            background-size: 100px;
-            background-repeat: no-repeat;
-            animation: appear 1.5s ease;
-            -webkit-animation: appear 1.5s ease;
-            animation-iteration-count: 1;
-        }
-
-        .head {
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            top: 100%;
-        }
-
-        .player_td {
-            height: 100px;
-            width: 100px;
-            background-image: url("../images/player.png");
-            background-repeat: no-repeat;
-            background-size: 110px;
-            vertical-align: bottom;
-        }
-
-        .zoombie_td {
-            height: 100px;
-            width: 100px;
-            background-image: url("../images/zombie1.png");
-            background-repeat: no-repeat;
-            background-size: 100px;
-            vertical-align: bottom;
-        }
-
-        .blue {
-            background-image: "";
-            background-size: 100px;
-            background-repeat: no-repeat;
-            filter: saturate(7);
-            animation: appear 1.5s ease;
-            -webkit-animation: appear 1.5s ease;
-            animation-iteration-count: 1;
-        }
-
-        @keyframes appear {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-100px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        #zoombie_ko {
-            width: 90px;
-            opacity: 0;
-        }
-
-        #player_ko {
-            width: 90px;
-            opacity: 0;
-        }
-    </style>
 </head>
 
 <body>
     <div id="div">
-        <table align="center">
-            <tr align="center" style="font-size: 16px; color: blue; font-weight: bolder;">
+        <table align="center" class="info_table">
+            <tr align="center" style="font-size: 20px; color: blue; font-weight: bolder;">
                 <td id="player_name"></td>
                 <td></td>
                 <td id="zoombie_name"></td>
             </tr>
-            <tr align="center" style="font-size: 16px; font-weight: bolder;">
+            <tr align="center" style="font-size: 18px; font-weight: bolder;">
                 <td>
                     <table width="100px">
                         <tr align="center">
@@ -159,8 +52,7 @@
                     </div>
                 </td>
                 <td>
-                    <iframe id="iframe" src="countdown.html" frameborder="0"
-                        style="height: 100px; width: 100px;"></iframe>
+                    <iframe id="iframe" src="countdown.html" frameborder="0"></iframe>
                 </td>
                 <td class="zoombie_td">
                     <div style="text-align: center;"><img src="../images/KO.png" id="zoombie_ko"></div>
@@ -425,7 +317,7 @@
                             pnumber += 100;
                         }
                     }
-                    line.style.width = pnumber + 'px';
+                    line.style.width = pnumber + '%';
                 } else {
                     isClick = rank
                 }
@@ -529,7 +421,7 @@
                     if (number == 0 && zombie_hp != 0) {
                         number += 100;
                     }
-                    line2.style.width = number + 'px';
+                    line2.style.width = number + '%';
 
                 }
             }
@@ -543,6 +435,14 @@
                 const target = document.getElementById(`hole${key}`);
                 // 觸發點擊事件
                 target.click();
+            }
+            // 英文字母鍵
+            const keyboard = ['z','x','c','a','s','d','q','w','e']
+            for(let i=0;i<keyboard.length;i++){
+                if(key == keyboard[i]){
+                    const press = document.getElementById(`hole${i+1}`);
+                    press.click();
+                }
             }
         }
 

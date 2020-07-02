@@ -1,0 +1,36 @@
+body,html{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#addhp:hover {
+    transform: scale(1.2);
+}
+
+#addatk:hover {
+    transform: scale(1.2);
+}
+
+#addtime:hover {
+    transform: scale(1.2);
+}
+
+.table2 {
+    width: 100%;
+    height: 40%;
+    background: #3c323b;
+    color: #bdcbbf;
+}
