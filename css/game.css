@@ -62,7 +62,7 @@ body,html{
     height: 100%;
     position: absolute;
     background-size: 100% 100%;
-    transform: translateY(100px);
+    transform: translateY(50%);
 }
 
 .player_td {
@@ -71,7 +71,7 @@ body,html{
     padding: 0;
     background-image: url("../images/player.png");
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 100% 100%;
     vertical-align: bottom;
 }
 
@@ -97,28 +97,28 @@ body,html{
 
 @keyframes appear {
     0% {
-        transform: translateY(110px);
+        transform: translateY(50%);
     }
 
     50% {
-        transform: translateY(-100px);
+        transform: translateY(-50%);
     }
 
     100% {
-        transform: translateY(110px);
+        transform: translateY(50%);
     }
 }
 @-webkit-keyframes appear {
     0% {
-        transform: translateY(110px);
+        transform: translateY(50%);
     }
 
     50% {
-        transform: translateY(-100px);
+        transform: translateY(-50%);
     }
 
     100% {
-        transform: translateY(110px);
+        transform: translateY(50%);
     }
 } 
 
