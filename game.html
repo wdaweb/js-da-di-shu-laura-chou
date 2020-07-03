@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/game.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="div">
+        <table align="center" class="info_table">
+            <tr align="center" style="font-size: 20px; color: blue; font-weight: bolder;">
+                <td id="player_name"></td>
+                <td></td>
+                <td id="zoombie_name"></td>
+            </tr>
+            <tr align="center" style="font-size: 18px; font-weight: bolder;">
+                <td>
+                    <table width="100px">
+                        <tr align="center">
+                            <td>攻擊力</td>
+                            <td id="player_attack"></td>
+                        </tr>
+                        <tr align="center">
+                            <td>生命值</td>
+                            <td id="player_life"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td></td>
+                <td>
+                    <table width="100px">
+                        <tr align="center">
+                            <td>攻擊力</td>
+                            <td id="zoombie_attack"></td>
+                        </tr>
+                        <tr align="center">
+                            <td>生命值</td>
+                            <td id="zoombie_life"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="player_td">
+                    <div style="text-align: center;"><img src="../images/KO.png" id="player_ko"></div>
+                    <div class="hp_border" id="border">
+                        <div class="hp_color" id="line"></div>
+
+                    </div>
+                </td>
+                <td>
+                    <iframe id="iframe" src="countdown.html" frameborder="0"></iframe>
+                </td>
+                <td class="zoombie_td">
+                    <div style="text-align: center;"><img src="../images/KO.png" id="zoombie_ko"></div>
+                    <div class="hp_border" id="border2">
+                        <div class="hp_color" id="line2"></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <table id="game" align="center" border="3px outset black">
+            <tr>
+                <td class="hole">
+                    <div class="head" id="hole7"></div>
+                </td>
+                <td class="hole">
+                    <div class="head" id="hole8"></div>
+                </td>
+                <td class="hole">
+                    <div class="head" id="hole9"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="hole">
+                    <div class="head" id="hole4"></div>
+                </td>
+                <td class="hole">
+                    <div class="head" id="hole5"></div>
+                </td>
+                <td class="hole">
+                    <div class="head" id="hole6"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="hole">
+                    <div class="head" id="hole1"></div>
+                </td>
+                <td class="hole">
+                    <div class="head" id="hole2"></div>
+                </td>
+                <td class="hole">
+                    <div class="head" id="hole3"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        // 禁止回上一頁
+        window.history.forward(1);
+        const heads = document.getElementsByClassName("head");
+
+        // 計量條
+        const line = document.getElementById('line');
+        const line2 = document.getElementById('line2');
+        const border = document.getElementById('border');
+        const border2 = document.getElementById('border2');
+        // 生命值
+        const plife = document.getElementById('player_life');
+        const zlife = document.getElementById('zoombie_life');
+        // 攻擊力
+        const pattack = document.getElementById('player_attack');
+        const zattack = document.getElementById('zoombie_attack');
+        // 名字
+        const pname = document.getElementById("player_name");
+        const zname = document.getElementById("zoombie_name");
+        // 圖片
+        const zimg = document.getElementsByClassName('zoombie_td');
+        // 殭屍資訊
+        const zoombie_info = [
+            {
+                rank: 1,
+                name: "一般殭屍",
+                hp: 100,
+                attack: 10,
+            },
+            {
+                rank: 2,
+                name: "聖誕殭屍",
+                hp: 200,
+                attack: 20,
+            },
+            {
+                rank: 3,
+                name: "髮箍殭屍",
+                hp: 300,
+                attack: 30,
+            },
+            {
+                rank: 4,
+                name: "水桶殭屍",
+                hp: 400,
+                attack: 40,
+            },
+            {
+                rank: 5,
+                name: "士兵殭屍",
+                hp: 500,
+                attack: 50,
+            },
+        ]
+
+        // 是否在遊戲中
+        let inGame = false;
+
+        // 計時器
+        let timer = 0;
+        // 生命條顏色
+        let hp_color = ['white', 'red', 'blue', 'yellow', 'orange', 'green']
+        // 取得玩家資訊
+        let storage = JSON.parse(sessionStorage.getItem('info'));
+        pname.innerText = storage.name;
+        pattack.innerText = storage.attack;
+        plife.innerText = storage.life;
+        let player_hp = storage.life;
+        // 玩家血條顏色
+        plife_color(player_hp)
+
+        // 殭屍hp
+        let zombie_hp = 100;
+
+        // 取得殭屍資訊
+        for (let i = 0; i < zoombie_info.length; i++) {
+            if (storage.level == zoombie_info[i].rank) {
+                // 音效
+                const music = new Audio();
+                music.src = `../music/level${zoombie_info[i].rank}.mp3`;
+                music.play();
+                zimg[0].style.backgroundImage = `url("../images/zombie${zoombie_info[i].rank}.png")`;
+                zname.innerText = zoombie_info[i].name
+                zattack.innerText = zoombie_info[i].attack
+                zlife.innerText = zoombie_info[i].hp
+                zombie_hp = zoombie_info[i].hp
+                // 殭屍血條顏色
+                zlife_color(zombie_hp)
+
+
+            }
+        }
+
+        // 關卡
+        let rank = storage.level
+        // 未按到
+        let isClick = rank;
+        // 剩餘秒數
+        let timeleft = storage.time;
+
+        // 呼叫iframe中的函式
+        const frame = document.getElementById("iframe");
+        frame.onload = () => {
+            frame.contentWindow.postMessage('off', '*')
+            frame.contentWindow.postMessage(timeleft + 1, '*')
+            setTimeout(() => {
+                // 設定每秒變換一次
+                timer = setInterval(game, 1000);
+                game();
+            }, 1000)
+
+
+            // 設定狀態為遊戲中
+            inGame = true;
+
+        }
+
+        let arr2 = []
+        const game = () => {
+            // 清掉格子的class
+            for (let head of heads) {
+                head.classList.remove("red");
+                head.classList.remove("blue");
+            }
+
+            // 隨機抽
+            let arr1 = [];
+            let non = false;
+
+            // 判斷前後出現的數字是否相同
+            while (non == false) {
+                for (let i = 0; i < rank; i++) {
+                    const rand = Math.floor(Math.random() * 9);
+                    // 判斷是否重複
+                    if (arr1.includes(rand)) {
+                        i--;
+                        continue;
+                    }
+                    arr1.push(rand)
+                }
+                if (arr2.length != 0) {
+                    for (let a1 of arr1) {
+                        for (let a2 of arr2) {
+                            if (a1 == a2) {
+                                arr1.length = 0
+                                break;
+                            } else {
+                                arr2.length = 0;
+                                arr2 = arr1;
+                                non = true;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    arr2 = arr1;
+                    non = true;
+                }
+            }
+
+
+            // 出現頭
+            for (let i = 0; i < arr1.length; i++) {
+                heads[arr1[i]].classList.add("red");
+                heads[arr1[i]].style.backgroundImage = `url("../images/zoombie${rank}_head.png")`;
+
+            }
+
+            // 時間減一
+            timeleft--;
+
+            if (rank == 1) {
+                // 顯示玩家生命值
+                setTimeout(() => {
+                    if (isClick == 1) {
+                        player_hp -= zoombie_info[rank - 1].attack;
+                        if (player_hp < 0) {
+                            player_hp = 0
+                        }
+                        plife.innerText = player_hp;
+                        line.style.width = player_hp + 'px';
+                        isClick = rank;
+                    } else {
+                        isClick = rank;
+                    }
+                }, 1000)
+
+
+            } else if (timeleft % 2 == 0 && timeleft > -1) {
+                if (isClick != 0 && isClick > 0) {
+                    // 顯示玩家生命值
+                    player_hp -= zoombie_info[rank - 1].attack * isClick;
+
+                    isClick = rank;
+
+                    if (player_hp < 0) {
+                        player_hp = 0
+                    }
+                    plife.innerText = player_hp;
+
+                    // 玩家生命條顏色
+                    plife_color(player_hp)
+
+                    // 顯示玩家生命條
+                    // 取十位數
+                    let pten = ((player_hp % 100) / 10) * 10
+                    // 取個位數
+                    let pone = player_hp % 10
+                    let pnumber = pone + pten
+                    if (player_hp == 100 && storage.life > 100) {
+                        if (pnumber == 0 && player_hp != 0) {
+                            border.style.background = hp_color[0]
+                            line.style.background = hp_color[1]
+                            pnumber += 100;
+                        }
+                    }
+                    line.style.width = pnumber + '%';
+                } else {
+                    isClick = rank
+                }
+            }
+
+            // 如果時間到了
+            if (timeleft < 0 || player_hp == 0 || zombie_hp == 0) {
+                //設定狀態為不在遊戲中
+                inGame = false;
+                // 停止計時器
+                if (timeleft < 0) {
+                    setTimeout(() => {
+                        clearInterval(timer);
+                        frame.contentWindow.postMessage('off', '*')
+                        frame.contentWindow.postMessage(timeleft, '*')
+
+                    }, 1000)
+                } else {
+                    clearInterval(timer);
+                    frame.contentWindow.postMessage('off', '*')
+                    frame.contentWindow.postMessage(timeleft, '*')
+                }
+
+                // 清掉格子的class
+                for (let head of heads) {
+                    head.classList.remove("red");
+                    head.classList.remove("blue");
+                }
+                // 殭屍生命歸零
+                if (zombie_hp == 0) {
+                    let zko = document.getElementById('zoombie_ko');
+                    zko.style.opacity = 1;
+                }
+                // 玩家生命歸零
+                if (player_hp == 0) {
+                    let pko = document.getElementById('player_ko');
+                    pko.style.opacity = 1;
+                }
+
+                // 比較血條
+                setTimeout(() => {
+                    if (player_hp > zombie_hp) {
+                        if (storage.level != zoombie_info.length) {
+                            storage.level += 1;
+                            sessionStorage.setItem('info', JSON.stringify(storage));
+                            window.location.href = 'reward.html'
+                        } else {
+                            window.location.href = 'win.html'
+                        }
+                    } else if (player_hp == zombie_hp) {
+                        setTimeout(() => {
+                            window.location.href = 'again.html'
+                        }, 1000)
+                    }
+                    else {
+                        setTimeout(() => {
+                            window.location.href = 'again.html'
+                        }, 1000)
+                    }
+
+                }, 250)
+
+            }
+
+        }
+
+
+        for (let i = 0; i < heads.length; i++) {
+            heads[i].onclick = () => {
+                const hit = new Audio();
+                hit.src = `../music/hit.mp3`;
+                hit.play();
+                // 如果在遊戲中且包含red
+                if (inGame && heads[i].classList.contains("red")) {
+                    isClick--;
+                    // 標記為按下去
+                    heads[i].classList.add("blue");
+                    heads[i].classList.remove("red");
+
+                    heads[i].style.backgroundImage = `url("../images/zoombie${rank}_head.png")`;
+                    // 殭屍生命條
+                    zombie_hp -= storage.attack;
+
+                    // 殭屍生命條顏色
+                    zlife_color(zombie_hp)
+
+                    // 殭屍生命小於0
+                    if (zombie_hp < 0) {
+                        zombie_hp = 0;
+                    }
+                    // 顯示殭屍生命值
+                    zlife.innerText = zombie_hp;
+
+                    // 殭屍生命條寬度設定
+                    // 取十位數
+                    let ten = ((zombie_hp % 100) / 10) * 10
+                    // 取個位數
+                    let one = zombie_hp % 10
+                    let number = one + ten
+                    // 殭屍生命條
+                    if (number == 0 && zombie_hp != 0) {
+                        number += 100;
+                    }
+                    line2.style.width = number + '%';
+
+                }
+            }
+        }
+
+        document.onkeydown = (event) => {
+            const key = event.key;
+            // 如果按鍵是數字，且在遊戲中，數字為1~9
+            if (!isNaN(key) && inGame && key > 0 && key < 10) {
+                // 找到對應的格子
+                const target = document.getElementById(`hole${key}`);
+                // 觸發點擊事件
+                target.click();
+            }
+            // 英文字母鍵
+            const keyboard = ['z','x','c','a','s','d','q','w','e']
+            for(let i=0;i<keyboard.length;i++){
+                if(key == keyboard[i]){
+                    const press = document.getElementById(`hole${i+1}`);
+                    press.click();
+                }
+            }
+        }
+
+        // 殭屍生命條顏色判斷
+        function zlife_color(hp) {
+            // 數字轉文字轉陣列
+            let life_arr = hp.toString().split("")
+            if (life_arr.length == 3) {
+                if (hp == 500) {
+                    border2.style.background = hp_color[4]
+                    line2.style.background = hp_color[5]
+                }
+                if (life_arr[0] == "4") {
+                    if (hp == 400) {
+                        border2.style.background = hp_color[3]
+                        line2.style.background = hp_color[4]
+                    } else {
+                        border2.style.background = hp_color[4]
+                        line2.style.background = hp_color[5]
+                    }
+                } else if (life_arr[0] == "3") {
+                    if (hp == 300) {
+                        border2.style.background = hp_color[2]
+                        line2.style.background = hp_color[3]
+                    } else {
+                        border2.style.background = hp_color[3]
+                        line2.style.background = hp_color[4]
+                    }
+                } else if (life_arr[0] == "2") {
+                    if (hp == 200) {
+                        border2.style.background = hp_color[1]
+                        line2.style.background = hp_color[2]
+                    } else {
+                        border2.style.background = hp_color[2]
+                        line2.style.background = hp_color[3]
+                    }
+                } else if (life_arr[0] == "1") {
+                    if (hp == 100) {
+                        border2.style.background = hp_color[0]
+                        line2.style.background = hp_color[1]
+                    } else {
+                        border2.style.background = hp_color[1]
+                        line2.style.background = hp_color[2]
+                    }
+
+                }
+            } else {
+                border2.style.background = hp_color[0]
+                line2.style.background = hp_color[1]
+            }
+        }
+        // 玩家生命條顏色判斷
+        function plife_color(hp) {
+            let life_arr = hp.toString().split("")
+            if (life_arr.length == 3) {
+                if (hp == 500) {
+                    border.style.background = hp_color[4]
+                    line.style.background = hp_color[5]
+                }
+                if (life_arr[0] == "4") {
+                    if (hp == 400) {
+                        border.style.background = hp_color[3]
+                        line.style.background = hp_color[4]
+                    } else {
+                        border.style.background = hp_color[4]
+                        line.style.background = hp_color[5]
+                    }
+                } else if (life_arr[0] == "3") {
+                    if (hp == 300) {
+                        border.style.background = hp_color[2]
+                        line.style.background = hp_color[3]
+                    } else {
+                        border.style.background = hp_color[3]
+                        line.style.background = hp_color[4]
+                    }
+                } else if (life_arr[0] == "2") {
+                    if (hp == 200) {
+                        border.style.background = hp_color[1]
+                        line.style.background = hp_color[2]
+                    } else {
+                        border.style.background = hp_color[2]
+                        line.style.background = hp_color[3]
+                    }
+                } else if (life_arr[0] == "1") {
+                    if (hp == 100) {
+                        border.style.background = hp_color[0]
+                        line.style.background = hp_color[1]
+                    } else {
+                        border.style.background = hp_color[1]
+                        line.style.background = hp_color[2]
+                    }
+
+                }
+            } else {
+                border.style.background = hp_color[0]
+                line.style.background = hp_color[1]
+            }
+        }
+    </script>
+</body>
+
+</html>
