@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/playerimg.css">
+    <title>Document</title>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>選擇頭像</h1>
+    </div>
+    <div class="row">
+        <div class="circle" onclick="choose(0)" style="background-color:#FFFF37;">
+            <img src="../images/player0.png">
+        </div>
+        <div class="circle" onclick="choose(1)">
+            <img src="../images/player1.png">
+        </div>
+    </div>
+    <div class="row">
+        <div class="circle" onclick="choose(2)">
+            <img src="../images/player2.png">
+        </div>
+        <div class="circle" onclick="choose(3)">
+            <img src="../images/player3.png">
+        </div>
+    </div>
+    <div style="text-align: center;">
+        <img src="../images/next.png" id="next">
+    </div>
+    <script>
+        // 禁止回上一頁
+        window.history.forward(1);
+        const btn = document.getElementById('next')
+        const players = document.getElementsByClassName('circle')
+        let img = 0
+        btn.onclick = () => {
+            sessionStorage.setItem('img', JSON.stringify(img))
+            window.location.href = 'request.html'
+        }
+        function choose (num) {          
+            for (let i = 0; i < 4; i++) {
+                if (num === i) {
+                    players[i].style.backgroundColor = '#FFFF37'
+                    img = i
+                } else {
+                    players[i].style.backgroundColor = '#fff'
+                }
+            }
+        }
+    </script>
+</body>
+</html>

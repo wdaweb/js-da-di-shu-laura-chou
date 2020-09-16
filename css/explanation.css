@@ -6,8 +6,20 @@ body,html {
 #explanation{
     width: 100%;
     height: 100%;
+    position: relative;
 }
 #img{
     width: 100%;
     height: 100%;
+}
+#next {
+    position: absolute;
+    right: 10%;
+    bottom: 10%;
+    animation: ani 2.5s infinite;
+}
+@keyframes ani {
+    0%{transform: scale(1);}
+    50%{transform: scale(1.1);}
+    100%{transform: scale(1);}
 }

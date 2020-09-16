@@ -48,7 +48,6 @@
                     <div style="text-align: center;"><img src="../images/KO.png" id="player_ko"></div>
                     <div class="hp_border" id="border">
                         <div class="hp_color" id="line"></div>
-
                     </div>
                 </td>
                 <td>
@@ -121,6 +120,7 @@
         const pname = document.getElementById("player_name");
         const zname = document.getElementById("zoombie_name");
         // 圖片
+        const pimg = document.getElementsByClassName('player_td');
         const zimg = document.getElementsByClassName('zoombie_td');
         // 殭屍資訊
         const zoombie_info = [
@@ -165,6 +165,8 @@
         let hp_color = ['white', 'red', 'blue', 'yellow', 'orange', 'green']
         // 取得玩家資訊
         let storage = JSON.parse(sessionStorage.getItem('info'));
+        let storageimg = JSON.parse(sessionStorage.getItem('img'));
+        pimg[0].style.backgroundImage = `url("../images/player${storageimg}.png")`;
         pname.innerText = storage.name;
         pattack.innerText = storage.attack;
         plife.innerText = storage.life;
