@@ -9,5 +9,3 @@
 ### 勝利條件
 - 時間結束前殭屍生命值歸零
 - 時間結束後玩家生命值大於殭屍生命值
-## Demo
-https://laura-chou.github.io/hit_zombies/
